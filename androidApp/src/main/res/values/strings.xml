@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="til_now_playing">Now Playing Movies</string>
+    <string name="til_popular">Popular Movies</string>
+    <string name="top_rated">Top Rated Movies</string>
+    <string name="upcoming">Upcoming Movies</string>
+</resources>
