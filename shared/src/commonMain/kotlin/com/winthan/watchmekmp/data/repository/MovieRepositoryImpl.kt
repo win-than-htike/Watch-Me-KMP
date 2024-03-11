@@ -3,6 +3,7 @@ package com.winthan.watchmekmp.data.repository
 import com.winthan.watchmekmp.data.model.toDomain
 import com.winthan.watchmekmp.data.remote.MovieRemoteDataSource
 import com.winthan.watchmekmp.domain.model.Movie
+import com.winthan.watchmekmp.domain.model.Trailer
 import com.winthan.watchmekmp.domain.repository.MovieRepository
 
 internal class MovieRepositoryImpl(
@@ -36,6 +37,12 @@ internal class MovieRepositoryImpl(
 
     override suspend fun getById(movieId: Int): Movie {
         return remoteDataSource.getById(movieId).toDomain()
+    }
+
+    override suspend fun getTrailers(movieId: Int): List<Trailer> {
+        return remoteDataSource.getTrailers(movieId)?.data?.map {
+            it.toDomain()
+        } ?: emptyList()
     }
 
 

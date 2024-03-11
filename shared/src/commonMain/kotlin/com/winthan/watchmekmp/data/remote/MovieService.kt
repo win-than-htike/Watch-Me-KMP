@@ -3,6 +3,7 @@ package com.winthan.watchmekmp.data.remote
 import com.winthan.watchmekmp.data.Constants
 import com.winthan.watchmekmp.data.model.MovieDto
 import com.winthan.watchmekmp.data.model.MovieResponse
+import com.winthan.watchmekmp.data.model.TrailerResponse
 import io.ktor.client.call.body
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
@@ -59,6 +60,19 @@ internal class MovieService : KtorApi() {
     ): MovieDto {
         return client.get {
             pathUrl("movie/$movieId")
+        }.body()
+    }
+
+    /**
+     * Fetches the trailers for a specific movie from the remote API.
+     * @param movieId The ID of the movie to fetch trailers for.
+     * @return A TrailerResponse object containing the fetched trailers.
+     */
+    suspend fun getTrailers(
+        movieId: Int
+    ): TrailerResponse {
+        return client.get {
+            pathUrl("movie/$movieId/videos")
         }.body()
     }
 

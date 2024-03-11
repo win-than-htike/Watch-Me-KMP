@@ -11,6 +11,8 @@ import shared
 
 struct DetailScreen: View {
     
+    @StateObject var viewModel = DetailViewModel()
+    
     let movie: Movie
     
     var body: some View {
@@ -62,7 +64,70 @@ struct DetailScreen: View {
                     Text(movie.description_)
                         .font(.body)
                         .fixedSize(horizontal: false, vertical: true)
-                
+                    
+                    Text("Trailers")
+                    
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        
+                        LazyHStack(
+                            alignment: .top
+                        ){
+                            
+                            ForEach(viewModel.uiState.trailers, id: \.id) { trailer in
+                                
+                                NavigationLink(value: trailer) {
+                                    
+                                    ZStack {
+                                        
+                                        AsyncImage(url: URL(string: "https://img.youtube.com/vi/\(trailer.key)/0.jpg")) { image in
+                                            image.resizable()
+                                        } placeholder: {
+                                            Color.gray
+                                        }
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(width: 300, height: 250)
+                                        .clipped()
+                                        
+                                        VStack {
+                                            Spacer()
+                                            Text(trailer.name)
+                                                .foregroundColor(.white)
+                                                .multilineTextAlignment(.center)
+                                                .lineLimit(2)
+                                                .truncationMode(.tail)
+                                                .padding(.all, 8)
+                                                .frame(width: 300)
+                                        }
+                                        
+                                        // Play button overlay
+                                        Image(systemName: "play.circle.fill") // Using a system image for simplicity
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fit)
+                                            .frame(width: 50, height: 50)
+                                            .background(Color.black.opacity(0.6))
+                                            .clipShape(Circle())
+                                            .foregroundColor(.white)
+                                            .onTapGesture {
+                                                let appURL = URL(string: "youtube://www.youtube.com/watch?v=\(trailer.key)")!
+                                                let webURL = URL(string: "https://www.youtube.com/watch?v=\(trailer.key)")!
+                                                
+                                                if UIApplication.shared.canOpenURL(appURL) {
+                                                    // If YouTube app is installed, open the video in the app
+                                                    UIApplication.shared.open(appURL, options: [:], completionHandler: nil)
+                                                } else {
+                                                    // If YouTube app is not installed, open the video in Safari
+                                                    UIApplication.shared.open(webURL, options: [:], completionHandler: nil)
+                                                }
+                                            }
+                                    }
+                                    
+                                }
+                            }
+                            
+                        }
+                        
+                    }.padding(.leading)
+                    
                     
                 }
                 .padding(20)
@@ -71,6 +136,8 @@ struct DetailScreen: View {
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             
+        }.task {
+            viewModel.getTrailers(movieId: movie.id)
         }
         
     }

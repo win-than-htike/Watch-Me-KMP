@@ -8,6 +8,7 @@ import com.winthan.watchmekmp.domain.usecase.GetMovieUseCase
 import com.winthan.watchmekmp.domain.usecase.GetNowPlayingMovieUseCase
 import com.winthan.watchmekmp.domain.usecase.GetPopularMovieUseCase
 import com.winthan.watchmekmp.domain.usecase.GetTopRatedMovieUseCase
+import com.winthan.watchmekmp.domain.usecase.GetTrailerUseCase
 import com.winthan.watchmekmp.domain.usecase.GetUpcomingMovieUseCase
 import com.winthan.watchmekmp.domain.usecase.HomeScreenUseCase
 import com.winthan.watchmekmp.utils.provideDispatcher
@@ -30,6 +31,7 @@ private val domainModule = module {
     factory { GetTopRatedMovieUseCase() }
     factory { GetUpcomingMovieUseCase() }
     factory { HomeScreenUseCase(get(), get(), get(), get()) }
+    factory { GetTrailerUseCase() }
 }
 
 private val sharedModule = listOf(dataModule, utilityModule, domainModule)

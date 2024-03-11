@@ -38,6 +38,12 @@ internal class MovieRemoteDataSource(
         apiService.getMovie(movieId)
     }
 
+    suspend fun getTrailers(
+        movieId: Int
+    ) = safeApiCall {
+        apiService.getTrailers(movieId)
+    }
+
     private suspend fun <T> safeApiCall(apiCall: suspend () -> T): T? = withContext(dispatcher.io) {
         try {
             apiCall.invoke()

@@ -51,4 +51,5 @@ dependencies {
     implementation(libs.systemuicontroller)
     implementation(libs.navigation.compose)
     implementation("org.slf4j:slf4j-simple:1.6.1")
+    implementation("androidx.webkit:webkit:1.8.0-beta01")
 }
